@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Il mio Progetto Professionale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc; /* Sfondo generale più pulito */
+      color: #334155;
+    }
+
+    /* Header con immagine di sfondo e overlay scuro */
+    header {
+      position: relative; /* per posizionare overlay */
+      background-image: url('assets/images/header-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+      padding-top: 6rem; /* equivalent to py-24 */
+      padding-bottom: 6rem;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.7); /* overlay nero trasparente */
+      z-index: 0;
+    }
+
+    header > div {
+      position: relative;
+      z-index: 1; /* per mettere contenuto sopra overlay */
+      max-width: 72rem; /* max-w-6xl */
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem; /* px-6 */
+      padding-right: 1.5rem;
+      text-align: center;
+      color: white;
+    }
+
+    /* Card più pulite e professionali */
+    .professional-card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .professional-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Nuovo stile per le screenshot-card: sarà un contenitore con immagine dentro */
+    .screenshot-card {
+      position: relative;
+      border-radius: 0.75rem; /* rounded-xl */
+      overflow: hidden;
+      transition: all 0.3s ease-in-out;
+      min-height: 280px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000; /* sfondo nero dietro immagine */
+    }
+
+    .screenshot-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Immagine dentro la card: 100% larghezza e altezza con object-fit contain */
+    .screenshot-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* mantiene l'immagine intera senza tagli */
+      pointer-events: none; /* per fare in modo che il click sia sulla card e non sull'immagine */
+      user-select: none;
+      border-radius: 0.75rem;
+    }
+
+    /* Sfumatura normale dal basso */
+    .screenshot-card::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent);
+      z-index: 1;
+      transition: all 0.3s ease-in-out;
+      border-radius: 0 0 0.75rem 0.75rem;
+    }
+
+    /* Overlay scuro per hover */
+    .screenshot-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      z-index: 3;
+      transition: opacity 0.3s ease-in-out;
+      border-radius: 0.75rem;
+    }
+
+    .screenshot-card:hover::after {
+      opacity: 1;
+    }
+
+    /* Contenuto normale in basso */
+    .screenshot-card-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      z-index: 2;
+      color: white;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    /* Contenuto hover al centro */
+    .screenshot-card-hover-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      padding: 1.5rem;
+    }
+
+    .screenshot-card:hover .screenshot-card-content {
+      opacity: 0;
+    }
+
+    .screenshot-card:hover .screenshot-card-hover-content {
+      opacity: 1;
+    }
+
+    /* Pulsanti con stile professionale */
+    .btn-primary-pro {
+      background-color: #1e40af;
+      color: #ffffff;
+      transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+    .btn-primary-pro:hover {
+      background-color: #1e3a8a;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary-pro {
+      background-color: transparent;
+      border: 1px solid #94a3b8;
+      color: #475569;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .btn-secondary-pro:hover {
+      background-color: #f1f5f9;
+      transform: translateY(-1px);
+    }
+
+    /* Separatore tra sezioni */
+    .section-divider {
+      background: linear-gradient(to right, #e2e8f0 0%, #cbd5e1 50%, #e2e8f0 100%);
+      height: 1px;
+      width: 50%;
+      margin: 0 auto;
+    }
+
+    /* Icone e badge */
+    .icon-badge {
+      background-color: #e0f2fe;
+      color: #1e40af;
+    }
+
+    .stagger-animation {
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .stagger-animation:nth-child(1) { animation-delay: 0.1s; }
+    .stagger-animation:nth-child(2) { animation-delay: 0.2s; }
+    .stagger-animation:nth-child(3) { animation-delay: 0.3s; }
+    .stagger-animation:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Modale immagine fullscreen */
+    #modal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+      cursor: pointer;
+    }
+
+    #modal img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      cursor: default;
+      user-select: none;
+    }
+
+    #modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-size: 2.5rem;
+      color: white;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 60;
+      line-height: 1;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1 class="text-4xl lg:text-6xl font-extrabold mb-4 leading-tight">
+        Habits Tracker
+      </h1>
+      <p class="text-lg lg:text-xl font-light text-white/80 max-w-3xl mx-auto leading-relaxed">
+        Un progetto per produrre un semplice habits tracker, che consente di gestire le abitudini giornaliere in modo semplice ed intuitivo, utilizzando uno stack moderno, stabile, scalabile.
+      </p>
+      <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+        <button class="px-8 py-3 rounded-lg font-semibold btn-primary-pro shadow-md">
+          Contattami
+        </button>
+        <a href="https://github.com/fra65/habits-tracker" target="_blank">
+          <button class="px-8 py-3 rounded-lg font-semibold btn-secondary-pro text-white border-white/40 hover:bg-white/10 hover:text-white">
+            Visualizza Codice
+          </button>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl font-bold mb-3 text-slate-800">
+        Tecnologie chiave
+      </h2>
+      <p class="text-md text-slate-600 max-w-2xl mx-auto">
+        Tecnologie moderne e consolidate per garantire efficienza e modernità
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="professional-card rounded-xl p-8 text-center stagger-animation">
+        <div class="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center">
+          <img src="assets/icons/code.svg" alt="Icona Next.js" frameborder="0">
+        </div>
+        <h3 class="text-xl font-bold mb-1 text-slate-800">Next.js</h3>
+        <p class="text-slate-500 text-sm">
+          Framework React Fullstack per applicazioni scalabili e performanti
+        </p>
+      </div>
+      <div class="professional-card rounded-xl p-8 text-center stagger-animation">
+        <div class="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center">
+          <img src="assets/icons/prisma.svg" alt="Icona Prisma" frameborder="0">
+        </div>
+        <h3 class="text-xl font-bold mb-1 text-slate-800">Prisma</h3>
+        <p class="text-slate-500 text-sm">
+          ORM per query robuste, sviluppo veloce, gestione dati avanzata e affidabilità
+        </p>
+      </div>
+      <div class="professional-card rounded-xl p-8 text-center stagger-animation">
+        <div class="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center">
+          <img src="assets/icons/database.svg" alt="Icona MySQL" frameborder="0">
+        </div>
+        <h3 class="text-xl font-bold mb-1 text-slate-800">MySQL</h3>
+        <p class="text-slate-500 text-sm">
+          Database relazionale, affidabile e popolare
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <section class="max-w-7xl mx-auto px-6 py-20">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl font-bold mb-3 text-slate-800">
+        Interfacce Utente
+      </h2>
+      <p class="text-md text-slate-600 max-w-2xl mx-auto">
+        Design pulito e funzionalità intuitive per una user experience eccellente.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="screenshot-card" data-img-src="assets/images/signup_form_page.png">
+        <img src="assets/images/signup_form_page.png" alt="Autenticazione" draggable="false" />
+        <div class="screenshot-card-hover-content">
+          <h3 class="text-lg font-semibold text-white mb-1">Autenticazione</h3>
+          <p class="text-white/80 text-sm">Autenticazione sicura, semplice e veloce sia con credenziali, sia con provider esterni (Google, GitHub)</p>
+        </div>
+      </div>
+      <div class="screenshot-card" data-img-src="assets/images/today_with_active_habits.png">
+        <img src="assets/images/today_with_active_habits.png" alt="Abitudini Attive" draggable="false" />
+        <div class="screenshot-card-hover-content">
+          <h3 class="text-lg font-semibold text-white mb-1">Gestione giornaliera</h3>
+          <p class="text-white/80 text-sm">Spunta le abitudini completate giorno per giorno e in più visualizza tutto lo storico in maniera semplice e veloce</p>
+        </div>
+      </div>
+      <div class="screenshot-card" data-img-src="assets/images/categories.png">
+        <img src="assets/images/categories.png" alt="Categorie" draggable="false" />
+        <div class="screenshot-card-hover-content">
+          <h3 class="text-lg font-semibold text-white mb-1">Gestione categorie</h3>
+          <p class="text-white/80 text-sm">Gestisci le categorie in modo semplice e personalizzato, decidendo titolo, colore, icona. Il tutto in modo super semplice e intuitivo</p>
+        </div>
+      </div>
+      <div class="screenshot-card" data-img-src="assets/images/habits_hiding_inactive.png">
+        <img src="assets/images/habits_hiding_inactive.png" alt="Categorie" draggable="false" />
+        <div class="screenshot-card-hover-content">
+          <h3 class="text-lg font-semibold text-white mb-1">Gestione abitudini</h3>
+          <p class="text-white/80 text-sm">Gestisci le abitudini in modo semplice e personalizzato, decidendo se visualizzare o nascondere le abitudini disattivate. Il tutto in modo super semplice e intuitivo</p>
+        </div>
+      </div>
+      <div class="screenshot-card" data-img-src="assets/images/profile_dark.png">
+        <img src="assets/images/profile_dark.png" alt="Categorie" draggable="false" />
+        <div class="screenshot-card-hover-content">
+          <h3 class="text-lg font-semibold text-white mb-1">Gestione profilo</h3>
+          <p class="text-white/80 text-sm">Gestisci tutto ciò che riguarda il tuo profilo, potendolo creare, modificare ed eliminare in qualsiasi momento. Inoltre, gestisci comodamente le preferenze di lingua e di tema</p>
+        </div>
+      </div>
+      <div class="screenshot-card" data-img-src="assets/images/profile_light.png">
+        <img src="assets/images/profile_light.png" alt="Categorie" draggable="false" />
+        <div class="screenshot-card-hover-content">
+          <h3 class="text-lg font-semibold text-white mb-1">Aggiornamento preferenze</h3>
+          <p class="text-white/80 text-sm">Aggiorna in modo semplice, veloce e intuitivo le tue preferenze di tema e di lingua</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Footer e altre sezioni rimangono uguali -->
+
+  <!-- Modale per immagini fullscreen -->
+  <div id="modal">
+    <img id="modal-img" src="" alt="Screenshot completo" />
+    <button id="modal-close" aria-label="Chiudi">&times;</button>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl font-bold mb-3 text-slate-800">
+        Librerie esterne
+      </h2>
+      <p class="text-md text-slate-600 max-w-2xl mx-auto">
+        Un ecosistema tecnologico solido e all'avanguardia.
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <div class="professional-card rounded-xl p-6 h-full stagger-animation">
+        <div class="flex items-start space-x-3">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-[2em] h-[2em] fill-sky-400 flex-shrink-0">
+            <path d="M17.183 0C12.6 0 9.737 2.291 8.59 6.873c1.719-2.29 3.723-3.15 6.014-2.577 1.307.326 2.242 1.274 3.275 2.324 1.685 1.71 3.635 3.689 7.894 3.689 4.582 0 7.445-2.291 8.591-6.872-1.718 2.29-3.723 3.15-6.013 2.576-1.308-.326-2.243-1.274-3.276-2.324C23.39 1.98 21.44 0 17.183 0ZM8.59 10.309C4.01 10.309 1.145 12.6 0 17.182c1.718-2.291 3.723-3.15 6.013-2.577 1.308.326 2.243 1.274 3.276 2.324 1.685 1.71 3.635 3.689 7.894 3.689 4.582 0 7.445-2.29 8.59-6.872-1.718 2.29-3.722 3.15-6.013 2.577-1.307-.327-2.242-1.276-3.276-2.325-1.684-1.71-3.634-3.689-7.893-3.689Z" fill="sky-400"/>
+          </svg>
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2">Tailwind CSS</h3>
+        </div>
+        <p class="text-slate-500 text-sm">
+          Utility-first CSS framework altamente personalizzabile
+        </p>
+      </div>
+
+      
+      <div class="professional-card rounded-xl p-6 h-full stagger-animation">
+        <div class="flex gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="1em" height="1em" class="size-6">
+            <path fill="none" d="M0 0h256v256H0z"></path><path stroke="currentColor" stroke-linecap="round" stroke-width="24" d="m208 128-.2.2M168.2 167.8 128 208M192 40l-76.2 76.2M76.2 155.8 40 192"></path><circle cx="188" cy="148" r="24" fill="none" stroke="currentColor" stroke-width="24"></circle><circle cx="96" cy="136" r="24" fill="none" stroke="currentColor" stroke-width="24"></circle>
+          </svg>
+
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2">TweakCN</h3>
+        </div>
+        <p class="text-slate-500 text-sm">
+          Strumento moderno per la gestione di classi CSS dinamiche
+        </p>
+      </div>
+      
+      <div class="professional-card rounded-xl p-6 h-full stagger-animation">
+        <div class="flex gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="size-5"><rect width="256" height="256" fill="none"></rect><line x1="208" y1="128" x2="128" y2="208" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></line><line x1="192" y1="40" x2="40" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></line></svg>
+
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2">Shadcn UI</h3>
+        </div>
+        <p class="text-slate-500 text-sm">
+          Componenti UI React leggeri e altamente personalizzabili
+        </p>
+      </div>
+
+      <div class="professional-card rounded-xl p-6 h-full stagger-animation">
+        <div class="flex gap-2">
+
+          <img src="https://authjs.dev/img/etc/logo-sm.webp" class="w-[1.7em] h-[1.7em]" alt="">
+
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2">AuthJS</h3>
+        </div>
+        <p class="text-slate-500 text-sm">
+          Libreria di autenticazione ottimizzata per Next.js, modulare, comoda e sicura
+        </p>
+      </div>
+
+      <div class="professional-card rounded-xl p-6 h-full stagger-animation">
+        <div class="flex gap-2 items-start">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 125 115" class="w-[1.7em] h-[1.7em]" fill="none">
+            <g transform="translate(3.272 2.88)">
+              <path d="M96.19 98.498a53.922 53.922 0 0 1-3.958 3.418c-23.445 18.476-57.176 15.723-77.314-6.31-20.139-22.035-19.854-55.877.651-77.57C36.075-3.657 69.848-5.843 92.98 13.025c23.131 18.867 27.82 51.892 10.69 76.339" stroke="#52d4ff" stroke-width="5.4"/>
+              <circle cx="95.561" cy="99.097" r="2.699" fill="#52d4ff" fill-rule="nonzero"/>
+              <path d="M8.847 28.785c16.248-1.974 32.318-2.949 48.211-2.923 15.893.025 31.156 1.05 45.789 3.073" stroke="#52d4ff" stroke-linecap="square" stroke-width="5.4"/>
+              <ellipse cx="57.421" cy="57.12" rx="28.035" ry="57.12" stroke="#52d4ff" stroke-width="5.4"/>
+              <path d="M11.695 88.603c14.934 2 30.008 3 45.224 3 15.215 0 30.525-1 45.928-3M1.009 59.069h112.482" stroke="#52d4ff" stroke-linecap="square" stroke-width="5.4"/>
+            </g>
+          </svg>
+
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2">React Email</h3>
+        </div>
+        <p class="text-slate-500 text-sm">
+          Componenti React per costruire template email compatibili
+        </p>
+      </div>
+
+      <div class="professional-card rounded-xl p-6 h-full stagger-animation">
+        <div class="flex gap-2">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 125 115" class="w-[1.7em] h-[1.7em]" fill="none">
+            <g transform="translate(3.272 2.88)">
+              <path d="M96.19 98.498a53.922 53.922 0 0 1-3.958 3.418c-23.445 18.476-57.176 15.723-77.314-6.31-20.139-22.035-19.854-55.877.651-77.57C36.075-3.657 69.848-5.843 92.98 13.025c23.131 18.867 27.82 51.892 10.69 76.339" stroke="#52d4ff" stroke-width="5.4"/>
+              <circle cx="95.561" cy="99.097" r="2.699" fill="#52d4ff" fill-rule="nonzero"/>
+              <path d="M8.847 28.785c16.248-1.974 32.318-2.949 48.211-2.923 15.893.025 31.156 1.05 45.789 3.073" stroke="#52d4ff" stroke-linecap="square" stroke-width="5.4"/>
+              <ellipse cx="57.421" cy="57.12" rx="28.035" ry="57.12" stroke="#52d4ff" stroke-width="5.4"/>
+              <path d="M11.695 88.603c14.934 2 30.008 3 45.224 3 15.215 0 30.525-1 45.928-3M1.009 59.069h112.482" stroke="#52d4ff" stroke-linecap="square" stroke-width="5.4"/>
+            </g>
+          </svg>
+
+
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2">Next-Intl</h3>
+        </div>
+        <p class="text-slate-500 text-sm">
+          Internazionalizzazione i18n ottimizzata per Next.js
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="bg-slate-800 text-white py-12">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold mb-2">Pronto a Lavorare Insieme?</h3>
+        <p class="text-slate-400">Contattami per discutere il tuo prossimo progetto.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <button class="px-6 py-3 rounded-lg font-medium btn-primary-pro">
+          Contattami
+        </button>
+        <a href="https://github.com/fra65/habits-tracker" target="_blank">
+          <button class="px-6 py-3 rounded-lg font-medium border border-slate-600 text-slate-400 hover:bg-slate-700 hover:border-slate-500">
+            Vedi Repository
+          </button>
+        </a>
+      </div>
+      <p class="text-slate-500 text-sm">&copy; 2025 - Francesco Villani</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.screenshot-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const imageUrl = card.getAttribute('data-img-src');
+        if (!imageUrl) return;
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+
+        modalImg.src = imageUrl;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // blocca scroll dietro
+      });
+    });
+
+    document.getElementById('modal-close').addEventListener('click', () => {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'none';
+      document.body.style.overflow = ''; // sblocca scroll
+    });
+
+    document.getElementById('modal').addEventListener('click', e => {
+      if (e.target.id === 'modal') {
+        e.target.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+</body>
+</html>
